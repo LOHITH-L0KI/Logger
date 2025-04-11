@@ -1,3 +1,6 @@
+#ifndef DLOGGER_H
+#define DLOGGER_H
+
 #include "Logger.h"
 #include "LogLevel.h"
 
@@ -7,10 +10,11 @@ namespace Log {
     {
 
     public:
-        virtual void Log(LogLevel type, std::string* message) = 0;
+        virtual void Log(LogLevel type, std::string message) = 0;
+        virtual ~DLogger() {};
 
     private:
-        std::string* privBuildMessage(std::string& message, std::exception* exp);
+        std::string privBuildMessage(std::string& message, std::exception* exp);
 
         // Inherited via Logger
         void Debug(std::string message, std::exception* exp) override;
@@ -22,3 +26,5 @@ namespace Log {
     };
 
 }
+
+#endif // !DLOGGER_H

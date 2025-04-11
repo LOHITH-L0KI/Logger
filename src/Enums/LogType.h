@@ -1,3 +1,5 @@
+#ifndef LOG_TYPE_ENUM
+#define LOG_TYPE_ENUM
 
 namespace Log {
 	
@@ -9,3 +11,4 @@ namespace Log {
 		DATABASE
 	};
 }
+#endif // !LOG_TYPE_ENUM

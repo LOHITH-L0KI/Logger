@@ -22,15 +22,15 @@ namespace Log {
 		Log(LogLevel::ERROR, privBuildMessage(message, exp));
 	}
 
-	std::string* DLogger::privBuildMessage(std::string& message, std::exception* exp)
+	std::string DLogger::privBuildMessage(std::string& message, std::exception* exp)
 	{
-		std::string* msg = new std::string(message);
+		//std::string* msg = new std::string(message);
 
 		//add expetion message if any
 		if (exp)
-			msg->append(exp->what());
+			message.append(exp->what());
 
-		return msg;
+		return message;
 	}
 
 }
