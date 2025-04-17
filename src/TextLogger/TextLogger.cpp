@@ -32,10 +32,13 @@ namespace Log {
 		}
 	}
 
-	void TextLogger::Log(LogLevel type, std::string message)
+	void TextLogger::Log(LogLevel type, std::string* message)
 	{
 		//format the message and write to stream.
-		privWriteToStream(type, message);
+		privWriteToStream(type, *message);
+
+		//delete message once logged
+		delete message;
 	}
 
 	/// <summary>

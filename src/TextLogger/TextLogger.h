@@ -30,7 +30,7 @@ namespace Log {
 
     protected:
         // Inherited via DLogger
-        void Log(LogLevel type, std::string message) override;
+        void Log(LogLevel type, std::string* message) override;
 
     private:
         void privSetFSAndFPrefix();
