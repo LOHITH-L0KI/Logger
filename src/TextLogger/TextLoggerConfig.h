@@ -9,8 +9,8 @@ namespace Log {
 		
 		std::string fileName;
 		std::string directory;
-		int maxFileSize;
-		int maxFileCount;
+		int maxFileSize = 0;
+		int maxFileCount = 0;
 	};
 }
 

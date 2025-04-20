@@ -20,7 +20,7 @@
     <ClInclude Include="src\DLogger.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Logger.h">
+    <ClInclude Include="src\AbstractLogger.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Enums\LogLevel.h">
