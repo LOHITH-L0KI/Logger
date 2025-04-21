@@ -5,7 +5,7 @@
 #include <fstream>
 #include "TextLoggerConfig.h"
 
-namespace Log {
+namespace Logger {
 
     //----------REQUIREMENTS--------------
     /*

@@ -1,7 +1,7 @@
 #ifndef LOG_LEVEL_ENUM
 #define LOG_LEVEL_ENUM
 
-namespace Log {
+namespace Logger {
 	
 	enum LogLevel {
 		

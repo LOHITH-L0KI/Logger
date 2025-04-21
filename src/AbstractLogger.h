@@ -1,10 +1,10 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef ABSTRACT_LOGGER_H
+#define ABSTRACT_LOGGER_H
 
 #include <string>
 #include <exception>
 
-namespace Log {
+namespace Logger {
 
 	class AbstractLogger
 	{
@@ -19,4 +19,4 @@ namespace Log {
 
 }
 
-#endif // !LOGGER_H
+#endif // !ABSTRACT_LOGGER_H

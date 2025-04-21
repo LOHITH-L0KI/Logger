@@ -1,7 +1,7 @@
 #ifndef LOG_TYPE_ENUM
 #define LOG_TYPE_ENUM
 
-namespace Log {
+namespace Logger {
 	
 	enum LogType {
 		

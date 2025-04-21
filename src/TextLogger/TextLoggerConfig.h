@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace Log {
+namespace Logger {
 
 	struct TextLoggerConfig {
 		

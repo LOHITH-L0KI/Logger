@@ -1,6 +1,6 @@
 #include "DLogger.h"
 
-namespace Log {
+namespace Logger {
 	
 	void DLogger::Debug(std::string* message, std::exception* exp)
 	{

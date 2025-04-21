@@ -5,7 +5,7 @@
 #include "LogLevel.h"
 #include "LogType.h"
 
-namespace Log {
+namespace Logger {
 
 #define StringMe(enumVal) ToString(enumVal)
 

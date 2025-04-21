@@ -5,7 +5,7 @@
 namespace fs = std::filesystem;
 namespace ch = std::chrono;
 
-namespace Log {
+namespace Logger {
 	
 	TextLogger::TextLogger(TextLoggerConfig config)
 		:filePrefix(0),

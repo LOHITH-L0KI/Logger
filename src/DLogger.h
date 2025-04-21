@@ -4,7 +4,7 @@
 #include "AbstractLogger.h"
 #include "LogLevel.h"
 
-namespace Log {
+namespace Logger {
 
     class DLogger : public AbstractLogger
     {

@@ -135,6 +135,7 @@
     <ClInclude Include="src\Enums\LogType.h" />
     <ClInclude Include="src\Enums\ToString.h" />
     <ClInclude Include="src\AbstractLogger.h" />
+    <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\TextLogger\TextLogger.h" />
     <ClInclude Include="src\TextLogger\TextLoggerConfig.h" />
   </ItemGroup>
