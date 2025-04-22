@@ -3,7 +3,9 @@
     Designed to safely and efficiently record log messages for single/multi threaded applications.
 
 ## Description
-    This project is a high-performance, multithreaded logger system written in C++. It enables efficient, thread-safe logging to multiple outputs (files, databases, and console) using lock-free data structures and modern C++ features. Designed for real-time applications, it minimizes logging overhead and supports both sequential and concurrent integration modes.
+    This project is a high-performance, multithreaded logger system written in C++. 
+    It enables efficient, thread-safe logging to multiple outputs (files, databases, and console) using lock-free data structures and modern C++ features. 
+    Designed for real-time applications, it minimizes logging overhead and supports both sequential and concurrent integration modes.
 
 * Currenlty Supported outputs: File and Console.
 * Future Implementations: Database and Trace
@@ -24,13 +26,13 @@
 
 #### Default
 * Global:
-    Integration: Sequential
-    Output Type: File
+    ** Integration: Sequential
+    ** Output Type: File
 
 * File Settings: 
-    Creates a new Logs folder at your project directory
-    Default file size is 1 MB
-    A total of 10 files are created and these files are overwritten circularly.
+    ** Creates a new Logs folder at your project directory
+    ** Default file size is 1 MB
+    ** A total of 10 files are created and these files are overwritten circularly.
 
 ### Executing program
 * Download the project to your desired folder.
