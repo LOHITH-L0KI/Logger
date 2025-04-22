@@ -26,13 +26,13 @@
 
 #### Default
 * Global:
-    ** Integration: Sequential
-    ** Output Type: File
+    * Integration: Sequential
+    * Output Type: File
 
 * File Settings: 
-    ** Creates a new Logs folder at your project directory
-    ** Default file size is 1 MB
-    ** A total of 10 files are created and these files are overwritten circularly.
+    * Creates a new Logs folder at your project directory
+    * Default file size is 1 MB
+    * A total of 10 files are created and these files are overwritten circularly.
 
 ### Executing program
 * Download the project to your desired folder.
