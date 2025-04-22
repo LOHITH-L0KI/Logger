@@ -1,9 +1,9 @@
 #ifndef TEXT_LOGGER_H
 #define TEXT_LOGGER_H
 
-#include "DLogger.h"
 #include <fstream>
 #include "TextLoggerConfig.h"
+#include "AbstractLogger.h"
 
 namespace Logger {
 
@@ -21,7 +21,7 @@ namespace Logger {
     /// <summary>
     /// Writes logs to a text file.
     /// </summary>
-    class TextLogger :  public DLogger
+    class TextLogger :  public AbstractLogger
     {
 
     public:
@@ -30,11 +30,11 @@ namespace Logger {
 
     protected:
         // Inherited via DLogger
-        void Log(LogLevel type, std::string* message) override;
+        void Log(LogLevel level, const std::string& const message) override;
 
     private:
         void privSetFSAndFPrefix();
-        void privWriteToStream(LogLevel type, std::string& message);
+        void privWriteToStream(LogLevel level, const std::string& const message);
         void privCreateNewFS();
         void privSetFS();
 

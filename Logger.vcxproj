@@ -27,7 +27,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -70,12 +70,20 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgInstalledDir>..\TradeEngine\vcpkg_installed</VcpkgInstalledDir>
+    <VcpkgUseStatic>false</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>E:\Projects\TradeEngine\Utilities;$(ProjectDir)src\TextLogger;$(ProjectDir)src\LogRunner;$(ProjectDir)src\Enums;$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +98,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>E:\Projects\TradeEngine\Utilities;$(ProjectDir)src\TextLogger;$(ProjectDir)src\LogRunner;$(ProjectDir)src\Enums;$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,7 +113,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)src\Enums;$(ProjectDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Projects\TradeEngine\Utilities;$(ProjectDir)src\TextLogger;$(ProjectDir)src\LogRunner;$(ProjectDir)src\Enums;$(ProjectDir)src</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -121,6 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>E:\Projects\TradeEngine\Utilities;$(ProjectDir)src\TextLogger;$(ProjectDir)src\LogRunner;$(ProjectDir)src\Enums;$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,20 +140,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\DLogger.h" />
     <ClInclude Include="src\Enums\LogLevel.h" />
     <ClInclude Include="src\Enums\LogType.h" />
+    <ClInclude Include="src\Enums\RunMode.h" />
     <ClInclude Include="src\Enums\ToString.h" />
     <ClInclude Include="src\AbstractLogger.h" />
     <ClInclude Include="src\Logger.h" />
+    <ClInclude Include="src\LogRunner\Runner.h" />
+    <ClInclude Include="src\LogRunner\ThreadRunner.h" />
     <ClInclude Include="src\TextLogger\TextLogger.h" />
     <ClInclude Include="src\TextLogger\TextLoggerConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DLogger.cpp" />
     <ClCompile Include="src\Enums\ToString.cpp" />
+    <ClCompile Include="src\Logger.cpp" />
+    <ClCompile Include="src\LogRunner\Runner.cpp" />
+    <ClCompile Include="src\LogRunner\ThreadRunner.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\TextLogger\TextLogger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TradeEngine\Utilities\Utilities.vcxproj">
+      <Project>{3644deea-8c6d-416e-81a4-6621cfb21c29}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

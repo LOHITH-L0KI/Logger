@@ -15,11 +15,11 @@
     <Filter Include="Source Files\TextLogger">
       <UniqueIdentifier>{77a83eec-fa0d-46f8-bb17-ca41b3e055a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\LogRunner">
+      <UniqueIdentifier>{c77f4c9c-3fc2-4514-aaf0-6f1355b8acb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\DLogger.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\AbstractLogger.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -41,11 +41,17 @@
     <ClInclude Include="src\Logger.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\LogRunner\Runner.h">
+      <Filter>Source Files\LogRunner</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LogRunner\ThreadRunner.h">
+      <Filter>Source Files\LogRunner</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Enums\RunMode.h">
+      <Filter>Source Files\Enums</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DLogger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,6 +60,15 @@
     </ClCompile>
     <ClCompile Include="src\Enums\ToString.cpp">
       <Filter>Source Files\Enums</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogRunner\Runner.cpp">
+      <Filter>Source Files\LogRunner</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogRunner\ThreadRunner.cpp">
+      <Filter>Source Files\LogRunner</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logger.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ namespace Logger {
 		maxFileCount(config.maxFileCount),
 		fileName(config.fileName),
 		folderDir(config.directory),
-		fileExt(".txt")
+		fileExt("txt")
 	{
 		//set filestream mode
 		fsMode = std::ios::out	// set the stream as out stream(write stream).
@@ -32,13 +32,10 @@ namespace Logger {
 		}
 	}
 
-	void TextLogger::Log(LogLevel type, std::string* message)
+	void TextLogger::Log(LogLevel level, const std::string& const message)
 	{
 		//format the message and write to stream.
-		privWriteToStream(type, *message);
-
-		//delete message once logged
-		delete message;
+		privWriteToStream(level, message);
 	}
 
 	/// <summary>
@@ -62,36 +59,38 @@ namespace Logger {
 		if (!fs::is_empty(logDir)){
 			
 			auto lastWritten = (*fs::directory_iterator(logDir)).last_write_time();
-			auto tempLastWritten = lastWritten;
+			//auto tempLastWritten = lastWritten;
 			std::string fName;
 
 			//get last written fileName
 			for (auto const& dir_entry : fs::directory_iterator(logDir)) {
-				tempLastWritten = dir_entry.last_write_time();
+				//tempLastWritten = dir_entry.last_write_time();
 				
-				if (tempLastWritten > lastWritten) {
-					tempLastWritten = lastWritten;
+				if ((dir_entry.last_write_time() == lastWritten)) {
+					//tempLastWritten = lastWritten;
 					fName = dir_entry.path().stem().string();
+					//get prefix out of file name.
+					this->filePrefix = std::stol(fName.substr(this->fileName.size(), std::string::npos));
+					break;
 				}
-
 			}
 
-			//get prefix out of file name.
-			this->filePrefix = std::stol(fName.substr(this->fileName.size(), std::string::npos));
 		}
 
 
-		std::ios_base::openmode initFSMode = std::ios::out	// set the stream as out stream(write stream).
-											| std::ios::app;// seek to end pos of filestream.
+											
+		auto filePath = std::format("{0}{1}{2}.{3}", this->folderDir, this->fileName, this->filePrefix, this->fileExt);
 		//create file out steram buffer.
-		this->fsOut = std::ofstream(this->folderDir + this->fileName + std::to_string(this->filePrefix) + this->fileExt, initFSMode);
+		this->fsOut = std::ofstream(filePath, std::ios::app);
+		//this->fsOut.seekp(0, SEEK_END);	// set the stream as out stream(write stream).
+		//this->fsOut.close();
 	}
 
 	/// <summary>
 	/// Writes message to file stream.
 	/// </summary>
 	/// <param name="message"></param>
-	void TextLogger::privWriteToStream(LogLevel type, std::string& message)
+	void TextLogger::privWriteToStream(LogLevel level, const std::string& const message)
 	{
 		// Check if current file is within the file size range (maxFileSize)
 		if (fsOut.tellp() >= this->maxFileSize - message.size())
@@ -99,7 +98,7 @@ namespace Logger {
 
 		fsOut << ch::floor<ch::seconds>(ch::system_clock::now())	//current time
 			<< " -> "
-			<< StringMe(type)										// debug type
+			<< StringMe(level)										// debug level
 			<< " :: "
 			<< message												//message
 			<< "\n";												//new line.
@@ -134,7 +133,8 @@ namespace Logger {
 			this->fsOut.close();
 		}
 
+		auto filePath = std::format("{0}{1}{2}.{3}", this->folderDir, this->fileName, this->filePrefix, this->fileExt);
 		//set new filestream
-		this->fsOut = std::ofstream(this->folderDir + this->fileName + std::to_string(this->filePrefix) + this->fileExt, fsMode);
+		this->fsOut = std::ofstream(filePath, fsMode);
 	}
 }

@@ -8,7 +8,8 @@ namespace Logger {
 		DEBUG,
 		INFO,
 		WARNING,
-		ERROR
+		ERROR,
+		UNDEFINED
 	};
 }
 #endif // !LOG_LEVEL_ENUM

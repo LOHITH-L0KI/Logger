@@ -2,18 +2,14 @@
 #define ABSTRACT_LOGGER_H
 
 #include <string>
-#include <exception>
+#include "LogLevel.h"
 
 namespace Logger {
 
 	class AbstractLogger
 	{
 	public:
-		virtual void Debug(std::string* message, std::exception* exp = nullptr) = 0;
-		virtual void Info(std::string* message, std::exception* exp = nullptr) = 0;
-		virtual void Warning(std::string* message, std::exception* exp = nullptr) = 0;
-		virtual void Error(std::string* message, std::exception* exp = nullptr) = 0;
-
+		virtual void Log(LogLevel level, const std::string& const message) = 0;
 		virtual ~AbstractLogger() {};
 	};
 
