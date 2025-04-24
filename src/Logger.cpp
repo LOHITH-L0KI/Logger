@@ -11,35 +11,32 @@ namespace Logger {
 			delete this->_out;
 	}
 
-	Log::Log(LogType type, RunMode mode)
+	Log::Log(AbstractLogger*& logger, RunMode mode)
 		:_out(nullptr)
 	{
-
-		switch (mode)
-		{
-		case Logger::SEQUENTIAL:
-			_out = new Runner(type);
-			break;
-		case Logger::CONCURRENT_THREAD:
-			_out = new ThreadRunner(type);
-			Log::Debug("Logger Thread Started:");
-			break;
-		default:
-			break;
-		}
-	}
-
-	void Log::Configuration(LogType type, RunMode mode)
-	{
-		if (Log::privGetLogger() == nullptr) {
-			Log::_log = new Log(type, mode);
-		}
+		privConfigLoggerMode(mode, logger);
 	}
 
 	void Log::Destroy()
 	{
 		if (Log::_log)
 			delete Log::_log;
+	}
+
+	void Log::privConfigLoggerMode(RunMode mode, AbstractLogger*& logger)
+	{
+		switch (mode)
+		{
+		case Logger::SEQUENTIAL:
+			_out = new Runner(logger);
+			break;
+		case Logger::CONCURRENT_THREAD:
+			_out = new ThreadRunner(logger);
+			Log::Debug("Logger Thread Started:");
+			break;
+		default:
+			break;
+		}
 	}
 
 	void Log::privSend(LogLevel level, const std::string& msg)

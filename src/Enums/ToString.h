@@ -4,6 +4,7 @@
 #include <string>
 #include "LogLevel.h"
 #include "LogType.h"
+#include <RunMode.h>
 
 namespace Logger {
 
@@ -15,6 +16,7 @@ namespace Logger {
 	public:
 		ToString(LogLevel logLevel);
 		ToString(LogType logType);
+		ToString(RunMode runMode);
 
 		operator const char* ();
 

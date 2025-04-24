@@ -1,6 +1,5 @@
 #include <LogLevel.h>
 #include <string>
-#include "LogType.h"
 
 #ifndef RUNNER_H
 #define RUNNER_H
@@ -20,16 +19,13 @@ namespace Logger {
 		Runner(const Runner&) = delete;
 		Runner& operator= (const Runner&) = delete;
 
-		Runner(LogType type);
+		Runner(AbstractLogger* logger);
 
 		virtual ~Runner();
 
 	//METHODS
 	public:
-		virtual void Log(LogLevel level, const std::string& const message);
-
-	private:
-		void privSetLogger(LogType type);
+		virtual void Log(LogLevel level, const std::string& message);
 
 	//DATA
 	private:

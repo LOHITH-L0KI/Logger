@@ -37,13 +37,13 @@ namespace Logger {
 		ThreadRunner(const ThreadRunner&) = delete;
 		ThreadRunner& operator= (const ThreadRunner&) = delete;
 
-		ThreadRunner( LogType type);
+		ThreadRunner(AbstractLogger* logger);
 		~ThreadRunner() override;
 
 	//METHODS
 	public:
 		//Builds LogData and writes data to queue.
-		void Log(LogLevel level, const std::string& const message) override;
+		void Log(LogLevel level, const std::string& message) override;
 
 	private:
 		void privQueueReader();
@@ -51,6 +51,7 @@ namespace Logger {
 	//DATA
 	private:
 
+		//memory pool to create logData objects
 		Pool<LogData, 1 << 5> _dataPool;
 
 		//data queue to hold logs from client

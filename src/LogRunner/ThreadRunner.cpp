@@ -4,8 +4,8 @@
 
 namespace Logger {
 
-	ThreadRunner::ThreadRunner(LogType type)
-		:Runner(type),
+	ThreadRunner::ThreadRunner(AbstractLogger* logger)
+		:Runner(logger),
 		_dataPool(),
 		_queue(),
 		_runThread(nullptr),
@@ -26,7 +26,7 @@ namespace Logger {
 		delete _runThread;
 	}
 
-	void ThreadRunner::Log(LogLevel level, const std::string& const message)
+	void ThreadRunner::Log(LogLevel level, const std::string& message)
 	{
 		//TODO:: have a memeory pool to build new strings.
 		std::string* heapMsg = new std::string(message);

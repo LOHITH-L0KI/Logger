@@ -25,30 +25,46 @@ namespace Logger {
     {
 
     public:
-        TextLogger(TextLoggerConfig config);
+        TextLogger(TextLoggerConfig& config);
         virtual ~TextLogger();
 
     protected:
+
         // Inherited via DLogger
-        void Log(LogLevel level, const std::string& const message) override;
+        void Log(LogLevel level, const std::string& message) override;
 
     private:
+
+        /// <summary>
+        /// Creates the director if not present.
+        /// Sets the file prefix
+        /// Initializes the output file stream with the latest file prefix.
+        /// </summary>
+        /// <returns></returns>
         void privSetFSAndFPrefix();
-        void privWriteToStream(LogLevel level, const std::string& const message);
+
+        /// <summary>
+        /// Writes message to file stream.
+        /// </summary>
+        /// <param name="message"></param>
+        void privWriteToStream(LogLevel level, const std::string& message);
+        
+        /// <summary>
+        /// Create new log file
+        /// </summary>
         void privCreateNewFS();
+
+        /// <summary>
+        /// Closes any exisiting open filestream and sets new file stream.
+        /// </summary>
         void privSetFS();
 
     private:
-        size_t maxFileSize;
-        size_t maxFileCount;
-        int filePrefix;
-
-        std::ofstream fsOut;
-        std::ios_base::openmode fsMode;
-
-        std::string folderDir;
-        std::string fileName;
-        std::string fileExt;
+        
+        int _filePrefix;
+        TextLoggerConfig _config;
+        std::ofstream _fsOut;
+        std::ios_base::openmode _fsMode;
     };
 }
 

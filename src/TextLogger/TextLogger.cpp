@@ -2,56 +2,47 @@
 #include <filesystem>
 #include <ToString.h>
 #include <time.h>
+#include <cassert>
 namespace fs = std::filesystem;
 namespace ch = std::chrono;
 
 namespace Logger {
 	
-	TextLogger::TextLogger(TextLoggerConfig config)
-		:filePrefix(0),
-		maxFileSize(config.maxFileSize),
-		maxFileCount(config.maxFileCount),
-		fileName(config.fileName),
-		folderDir(config.directory),
-		fileExt("txt")
+	TextLogger::TextLogger(TextLoggerConfig& config)
+		:_filePrefix(0),
+		_config(config)
 	{
 		//set filestream mode
-		fsMode = std::ios::out	// set the stream as out stream(write stream).
+		_fsMode = std::ios::out	// set the stream as out stream(write stream).
 			| std::ios::trunc;	// destroy existing data if file exists.
 
-		//set filestream and fileprefix
+		//set filestream and _filePrefix
 		privSetFSAndFPrefix();
 	}
 
 	TextLogger::~TextLogger()
 	{
 		//close out file stream
-		if (this->fsOut.is_open()) {
-			this->fsOut.flush();
-			this->fsOut.close();
+		if (this->_fsOut.is_open()) {
+			this->_fsOut.flush();
+			this->_fsOut.close();
 		}
 	}
 
-	void TextLogger::Log(LogLevel level, const std::string& const message)
+	void TextLogger::Log(LogLevel level, const std::string& message)
 	{
 		//format the message and write to stream.
 		privWriteToStream(level, message);
 	}
 
-	/// <summary>
-	/// Creates the director if not present.
-	/// Sets the file prefix
-	/// Initializes the output file stream with the latest file prefix.
-	/// </summary>
-	/// <returns></returns>
 	void TextLogger::privSetFSAndFPrefix()
 	{
 		//get directory
-		fs::directory_entry logDir(this->folderDir);
+		fs::directory_entry logDir(this->_config.directory);
 
 		//check if directory exists
 		if (!logDir.exists()) {
-			fs::create_directories(this->folderDir);
+			fs::create_directories(this->_config.directory);
 			logDir.refresh();
 		}
 
@@ -70,71 +61,60 @@ namespace Logger {
 					//tempLastWritten = lastWritten;
 					fName = dir_entry.path().stem().string();
 					//get prefix out of file name.
-					this->filePrefix = std::stol(fName.substr(this->fileName.size(), std::string::npos));
+					this->_filePrefix = std::stol(fName.substr(this->_config.fileName.size(), std::string::npos));
 					break;
 				}
 			}
 
 		}
 
-
-											
-		auto filePath = std::format("{0}{1}{2}.{3}", this->folderDir, this->fileName, this->filePrefix, this->fileExt);
+		auto filePath = std::format("{0}\\{1}{2}.{3}", this->_config.directory, this->_config.fileName, this->_filePrefix, this->_config.fileExt);
 		//create file out steram buffer.
-		this->fsOut = std::ofstream(filePath, std::ios::app);
-		//this->fsOut.seekp(0, SEEK_END);	// set the stream as out stream(write stream).
-		//this->fsOut.close();
+		this->_fsOut = std::ofstream(filePath, std::ios::app);
 	}
 
-	/// <summary>
-	/// Writes message to file stream.
-	/// </summary>
-	/// <param name="message"></param>
 	void TextLogger::privWriteToStream(LogLevel level, const std::string& const message)
 	{
 		// Check if current file is within the file size range (maxFileSize)
-		if (fsOut.tellp() >= this->maxFileSize - message.size())
+		if (_fsOut.fail()) {
+			assert(false, "FlieOutStream error");
+		}
+		if (_fsOut.tellp() >= this->_config.maxFileSize - message.size())
 			privCreateNewFS();
 
-		fsOut << ch::floor<ch::seconds>(ch::system_clock::now())	//current time
+		_fsOut << ch::floor<ch::seconds>(ch::system_clock::now())	//current time
 			<< " -> "
 			<< StringMe(level)										// debug level
 			<< " :: "
 			<< message												//message
 			<< "\n";												//new line.
 
-		fsOut.flush();												//flush
+		_fsOut.flush();												//flush
 	}
 
-	/// <summary>
-	/// Create new log file
-	/// </summary>
 	void TextLogger::privCreateNewFS()
 	{
 		//overwrite exiting files if we reach maxfilecount
-		++this->filePrefix;
+		++this->_filePrefix;
 
-		if (this->filePrefix == this->maxFileCount) // zero index files prefix
-			this->filePrefix = 0;
+		if (this->_filePrefix == this->_config.maxFileCount) // zero index files prefix
+			this->_filePrefix = 0;
 
 		//set FS
 		privSetFS();
 	}
 
-	/// <summary>
-	/// Closes any exisiting open filestream and sets new file stream.
-	/// </summary>
 	void TextLogger::privSetFS()
 	{
 		//flush and close existing filestream
-		if (this->fsOut.is_open()) {
+		if (this->_fsOut.is_open()) {
 		
-			this->fsOut.flush();
-			this->fsOut.close();
+			this->_fsOut.flush();
+			this->_fsOut.close();
 		}
 
-		auto filePath = std::format("{0}{1}{2}.{3}", this->folderDir, this->fileName, this->filePrefix, this->fileExt);
+		auto filePath = std::format("{0}\\{1}{2}.{3}", this->_config.directory, this->_config.fileName, this->_filePrefix, this->_config.fileExt);
 		//set new filestream
-		this->fsOut = std::ofstream(filePath, fsMode);
+		this->_fsOut = std::ofstream(filePath, _fsMode);
 	}
 }

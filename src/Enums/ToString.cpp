@@ -48,6 +48,22 @@ namespace Logger {
 		}
 	}
 
+	ToString::ToString(RunMode runMode)
+	{
+		switch (runMode)
+		{
+		case Logger::SEQUENTIAL:
+			strcpy_s(this->buffer, ToString::BUFFER_SIZE, STRING_ME(SEQUENTIAL));
+			break;
+		case Logger::CONCURRENT_THREAD:
+			strcpy_s(this->buffer, ToString::BUFFER_SIZE, STRING_ME(CONCURRENT_THREAD));
+			break;
+		default:
+			assert(false);
+			break;
+		}
+	}
+
 	ToString::operator const char* ()
 	{
 		return (const char*)this->buffer;

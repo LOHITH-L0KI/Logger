@@ -3,12 +3,28 @@
 #include <format>
 #include <string>
 #include <string_view>
+#include <assert.h>
 
 #include <LogType.h>
 #include <LogLevel.h>
 #include <RunMode.h>
+#include "TextLogger.h"
+#include <TextLoggerConfig.h>
 
 namespace Logger {
+
+	struct DBConfig {};
+	struct ConsoleConfig {};
+	struct TraceConfig {};
+
+	//CONFIGURATION
+	template<LogType logtype>
+	struct ConfigSelector;
+
+	template <> struct ConfigSelector<LogType::TEXT> { using Type = TextLoggerConfig; };
+	template <> struct ConfigSelector<LogType::DATABASE> { using Type = DBConfig; };
+	template <> struct ConfigSelector<LogType::CONSOLE> { using Type = ConsoleConfig; };
+	template <> struct ConfigSelector<LogType::TRACE> { using Type = TraceConfig; };
 
 	class Runner;
 	class Log {
@@ -22,12 +38,21 @@ namespace Logger {
 		~Log();
 
 	private:
-		Log(LogType type, RunMode mode);
-			
+		Log(AbstractLogger*& logger, RunMode mode);
 
 	//INITIALIZER
 	public:
-		static void Configuration(LogType type, RunMode mode);
+		
+		template<LogType logType>
+		static inline void Configure(RunMode mode, ConfigSelector<logType>::Type config) {
+
+			if (Log::_log)
+				assert(false, "Logger already set");
+			else {
+				AbstractLogger* logger = privConfigLoggerType<logType>(config);
+				Log::_log = new Log(logger, mode);
+			}
+		}
 
 		static void Destroy();
 
@@ -59,6 +84,36 @@ namespace Logger {
 			return std::vformat(fmt, std::make_format_args(std::forward<A>(placeholders)...));
 		}
 
+		template<LogType logType, typename _Config>
+		static inline AbstractLogger* privConfigLoggerType(_Config& config) {
+
+			AbstractLogger* outLog = nullptr;
+			switch (logType)
+			{
+			case Logger::CONSOLE:
+				break;
+			case Logger::TRACE:
+				break;
+			case Logger::TEXT: {
+				if (std::is_same<_Config, typename ConfigSelector<logType>::Type>::value) {
+					outLog = new TextLogger(config);
+				}
+				else {
+					TextLoggerConfig defConfig;
+					outLog = new TextLogger(defConfig);
+				}
+			}
+				break;
+			case Logger::DATABASE:
+				break;
+			default:
+				break;
+			}
+
+			return outLog;
+		}
+
+		void privConfigLoggerMode(RunMode mode, AbstractLogger*& logger);
 		static void privSend(LogLevel level, const std::string& msg);
 		static Log* privGetLogger();
 

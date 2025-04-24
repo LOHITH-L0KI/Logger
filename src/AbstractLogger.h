@@ -9,7 +9,7 @@ namespace Logger {
 	class AbstractLogger
 	{
 	public:
-		virtual void Log(LogLevel level, const std::string& const message) = 0;
+		virtual void Log(LogLevel level, const std::string& message) = 0;
 		virtual ~AbstractLogger() {};
 	};
 

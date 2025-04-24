@@ -8,7 +8,8 @@ int main(int argc, char* argv[]) {
 	std::cout << "Logger Project";
 
 	//-------TESTING--------
-	Log::Configuration(LogType::TEXT, RunMode::SEQUENTIAL);
+	TextLoggerConfig tc;
+	Log::Configure<LogType::TEXT>(RunMode::SEQUENTIAL, tc);
 	
 	std::string msg;
 	Log::Debug(msg, 1, 2, "sd");
