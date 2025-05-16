@@ -42,11 +42,12 @@ namespace Logger {
 
 	//METHODS
 	public:
+
+		void Run();
 		//Builds LogData and writes data to queue.
 		void Log(LogLevel level, const std::string& message) override;
 
-	private:
-		void privQueueReader();
+		void operator()();
 
 	//DATA
 	private:

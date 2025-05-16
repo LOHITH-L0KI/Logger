@@ -11,7 +11,6 @@ namespace Logger {
 		_runThread(nullptr),
 		_kill(false)
 	{
-		this->_runThread = Thread::createAndStartThread(1, "Logger_Thread", [&]() { this->privQueueReader(); });
 	}
 
 	ThreadRunner::~ThreadRunner()
@@ -26,6 +25,34 @@ namespace Logger {
 		delete _runThread;
 	}
 
+	void ThreadRunner::Run()
+	{
+		if (!this->_runThread) {
+			this->_runThread = Thread::createAndStartThread(1, "Logger_Thread", *this);
+		}
+		else {
+			assert(false);
+		}
+	}
+
+	void ThreadRunner::operator()() {
+		LogData* data = nullptr;
+		while (!this->_kill.load(std::memory_order_relaxed)) {
+
+			if (_queue.pop(data)) {
+				Runner::Log(data->_level, *data->_msg);
+				_dataPool.dealloc(data);
+				data = nullptr;
+			}
+		}
+
+		//wait till all the data in queue is written
+		while (_queue.pop(data)) {
+			Runner::Log(data->_level, *data->_msg);
+			data = nullptr;
+		}
+	}
+
 	void ThreadRunner::Log(LogLevel level, const std::string& message)
 	{
 		//TODO:: have a memeory pool to build new strings.
@@ -37,23 +64,4 @@ namespace Logger {
 		}
 	}
 
-	void ThreadRunner::privQueueReader()
-	{
-		LogData* data = nullptr;
-		while (!this->_kill.load(std::memory_order_relaxed)) {
-
-			if (_queue.pop(data)) {
-				Runner::Log(data->_level, *data->_msg);
-				_dataPool.dealloc(data);
-				data = nullptr;
-			}
-
-		}
-
-		//wait till all the data in queue is written
-		while (_queue.pop(data)) {
-			Runner::Log(data->_level, *data->_msg);
-			data = nullptr;
-		}
-	}
 }

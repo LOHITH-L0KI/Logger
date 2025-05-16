@@ -5,11 +5,11 @@
 #include <string_view>
 #include <assert.h>
 
-#include <LogType.h>
-#include <LogLevel.h>
-#include <RunMode.h>
+#include "LogType.h"
+#include "LogLevel.h"
+#include "RunMode.h"
 #include "TextLogger.h"
-#include <TextLoggerConfig.h>
+#include "TextLoggerConfig.h"
 
 namespace Logger {
 
@@ -47,10 +47,14 @@ namespace Logger {
 		static inline void Configure(RunMode mode, ConfigSelector<logType>::Type config) {
 
 			if (Log::_log)
-				assert(false, "Logger already set");
+				Log::Warning("Tryed to reconfigure Logger.");
 			else {
 				AbstractLogger* logger = privConfigLoggerType<logType>(config);
 				Log::_log = new Log(logger, mode);
+				assert(Log::_log);
+				
+				if(Log::_log)
+					Log::Info("Successfully Configured Logger");
 			}
 		}
 
@@ -59,22 +63,22 @@ namespace Logger {
 	//METHODS		
 	public:
 		template<typename... A>
-		static inline void Debug(const std::string& fmt, A&&... args){
+		static inline void Debug(const std::string_view fmt, const A&... args){
 			privSend(LogLevel::DEBUG, BuildMessage(fmt, args...));
 		}
 		
 		template<typename... A>
-		static inline void Info(const std::string& fmt, A&&... args){
+		static inline void Info(const std::string_view fmt, const A&... args){
 			privSend(LogLevel::INFO, BuildMessage(fmt, args...));
 		}
 
 		template<typename... A>
-		static inline void Error(const std::string& fmt, A&&... args){
+		static inline void Error(const std::string_view fmt, const A&... args){
 			privSend(LogLevel::ERROR, BuildMessage(fmt, args...));
 		}
 
 		template<typename... A>
-		static inline void Warning(const std::string& fmt, A&&... args){
+		static inline void Warning(const std::string_view fmt, const A&... args){
 			privSend(LogLevel::WARNING, BuildMessage(fmt, args...));
 		}
 

@@ -30,9 +30,13 @@ namespace Logger {
 		case Logger::SEQUENTIAL:
 			_out = new Runner(logger);
 			break;
-		case Logger::CONCURRENT_THREAD:
-			_out = new ThreadRunner(logger);
+		case Logger::CONCURRENT_THREAD: {
+			auto tOut = new ThreadRunner(logger);
+			tOut->Run();
+			_out = tOut;
+
 			Log::Debug("Logger Thread Started:");
+		}
 			break;
 		default:
 			break;
