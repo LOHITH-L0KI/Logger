@@ -29,10 +29,23 @@ namespace Logger {
 		}
 	}
 
-	void TextLogger::Log(LogLevel level, const std::string& message)
+	void TextLogger::Log(const Runner::LogData& data)
 	{
-		//format the message and write to stream.
-		privWriteToStream(level, message);
+		// Check if current file is within the file size range (maxFileSize)
+		if (_fsOut.fail()) {
+			assert(false, "FlieOutStream error");
+		}
+		if (_fsOut.tellp() >= this->_config.maxFileSize - 512)
+			privCreateNewFS();
+
+		_fsOut << data._time			//current time
+			<< " -> "
+			<< StringMe(data._level)	// debug level
+			<< " :: "
+			<< data._buffer				//message
+			<< "\n";					//new line.
+
+		_fsOut.flush();
 	}
 
 	void TextLogger::privSetFSAndFPrefix()
@@ -73,25 +86,6 @@ namespace Logger {
 		this->_fsOut = std::ofstream(filePath, std::ios::app);
 	}
 
-	void TextLogger::privWriteToStream(LogLevel level, const std::string& const message)
-	{
-		// Check if current file is within the file size range (maxFileSize)
-		if (_fsOut.fail()) {
-			assert(false, "FlieOutStream error");
-		}
-		if (_fsOut.tellp() >= this->_config.maxFileSize - message.size())
-			privCreateNewFS();
-
-		_fsOut << ch::floor<ch::seconds>(ch::system_clock::now())	//current time
-			<< " -> "
-			<< StringMe(level)										// debug level
-			<< " :: "
-			<< message												//message
-			<< "\n";												//new line.
-
-		_fsOut.flush();												//flush
-	}
-
 	void TextLogger::privCreateNewFS()
 	{
 		//overwrite exiting files if we reach maxfilecount
@@ -117,4 +111,5 @@ namespace Logger {
 		//set new filestream
 		this->_fsOut = std::ofstream(filePath, _fsMode);
 	}
+
 }

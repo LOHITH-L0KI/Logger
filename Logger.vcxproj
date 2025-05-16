@@ -155,6 +155,7 @@
     <ClInclude Include="src\TextLogger\TextLoggerConfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AbstractLogger.cpp" />
     <ClCompile Include="src\Enums\ToString.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\LogRunner\Runner.cpp" />

@@ -8,6 +8,7 @@
 #include "LogType.h"
 #include "LogLevel.h"
 #include "RunMode.h"
+#include "ToString.h"
 #include "TextLogger.h"
 #include "TextLoggerConfig.h"
 
@@ -35,25 +36,22 @@ namespace Logger {
 		Log(const Log&) = delete;
 		Log operator = (const Log&) = delete;
 
-		~Log();
-
-	private:
-		Log(AbstractLogger*& logger, RunMode mode);
-
 	//INITIALIZER
 	public:
 		
 		template<LogType logType>
 		static inline void Configure(RunMode mode, ConfigSelector<logType>::Type config) {
 
-			if (Log::_log)
+			if (Log::_runner)
 				Log::Warning("Tryed to reconfigure Logger.");
 			else {
 				AbstractLogger* logger = privConfigLoggerType<logType>(config);
-				Log::_log = new Log(logger, mode);
-				assert(Log::_log);
+				assert(logger);
 				
-				if(Log::_log)
+				privConfigLoggerMode(mode, logger);
+				assert(Log::_runner);
+
+				if (Log::_runner)
 					Log::Info("Successfully Configured Logger");
 			}
 		}
@@ -117,14 +115,12 @@ namespace Logger {
 			return outLog;
 		}
 
-		void privConfigLoggerMode(RunMode mode, AbstractLogger*& logger);
+		static void privConfigLoggerMode(RunMode mode, AbstractLogger*& logger);
 		static void privSend(LogLevel level, const std::string& msg);
-		static Log* privGetLogger();
 
 	//DATA
 	private:
-		Runner* _out;
-		static Log* _log;
+		static Runner* _runner;
 	};
 }
 

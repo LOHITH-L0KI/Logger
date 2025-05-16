@@ -13,24 +13,7 @@ namespace Logger {
 
 	class ThreadRunner : public Runner
 	{
-	//STRUCT: LOG DATA.
-	private:
-		struct LogData {
-
-			LogData()
-				:_msg(nullptr),
-				_level(LogLevel::UNDEFINED)
-			{	}
-
-			LogData(const std::string* const msg, LogLevel level)
-				:_msg(msg),
-				_level(level)
-			{	}
-
-			const std::string* const _msg;
-			LogLevel _level;
-		};
-
+	
 	//BUILDERS
 	public:
 		ThreadRunner() = delete;

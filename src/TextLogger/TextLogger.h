@@ -30,8 +30,8 @@ namespace Logger {
 
     protected:
 
-        // Inherited via DLogger
-        void Log(LogLevel level, const std::string& message) override;
+        // Inherited via AbstractLogger
+        void Log(const Runner::LogData& data) override;
 
     private:
 
@@ -43,12 +43,6 @@ namespace Logger {
         /// <returns></returns>
         void privSetFSAndFPrefix();
 
-        /// <summary>
-        /// Writes message to file stream.
-        /// </summary>
-        /// <param name="message"></param>
-        void privWriteToStream(LogLevel level, const std::string& message);
-        
         /// <summary>
         /// Create new log file
         /// </summary>

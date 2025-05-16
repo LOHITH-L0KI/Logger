@@ -40,7 +40,7 @@ namespace Logger {
 		while (!this->_kill.load(std::memory_order_relaxed)) {
 
 			if (_queue.pop(data)) {
-				Runner::Log(data->_level, *data->_msg);
+				Runner::Log(*data);
 				_dataPool.dealloc(data);
 				data = nullptr;
 			}
@@ -48,7 +48,7 @@ namespace Logger {
 
 		//wait till all the data in queue is written
 		while (_queue.pop(data)) {
-			Runner::Log(data->_level, *data->_msg);
+			Runner::Log(*data);
 			data = nullptr;
 		}
 	}

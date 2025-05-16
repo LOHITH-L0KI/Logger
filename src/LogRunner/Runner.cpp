@@ -18,9 +18,17 @@ namespace Logger {
 
 	void Runner::Log(LogLevel level, const std::string& message)
 	{
-		assert(_logger != nullptr, "Logger Type is not defined");
+		_data._time = std::chrono::system_clock::now();
+		_data._level = level;
+		memcpy_s(_data._buffer, 512, message.c_str(), message.size());
 
-		if(_logger)
-		_logger->Log(level, message);
+		Log(this->_data);
 	}
+
+	void Runner::Log(const LogData& data)
+	{
+		if (_logger)
+			_logger->Log(data);
+	}
+
 }
