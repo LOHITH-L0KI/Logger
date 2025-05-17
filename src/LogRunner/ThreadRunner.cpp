@@ -55,9 +55,7 @@ namespace Logger {
 
 	void ThreadRunner::Log(LogLevel level, const std::string& message)
 	{
-		//TODO:: have a memeory pool to build new strings.
-		std::string* heapMsg = new std::string(message);
-		auto data = _dataPool.allocate(heapMsg, level);
+		auto data = _dataPool.allocate(message, level);
 
 		if (data) {
 			_queue.push(data);
