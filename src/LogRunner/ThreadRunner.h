@@ -36,7 +36,7 @@ namespace Logger {
 	private:
 
 		//memory pool to create logData objects
-		Pool<LogData, 1 << 5> _dataPool;
+		Pool<LogData, 1 << 6> _dataPool;
 
 		//data queue to hold logs from client
 		LFC_Queue<LogData*, 1 << 6> _queue;
